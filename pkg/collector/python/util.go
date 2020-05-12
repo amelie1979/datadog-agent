@@ -20,6 +20,8 @@ import (
 	"os/exec"
 	"sync"
 	"syscall"
+
+	"github.com/DataDog/datadog-agent/pkg/trace/obfuscate"
 )
 
 // GetSubprocessOutput runs the subprocess and returns the output
@@ -78,4 +80,14 @@ func GetSubprocessOutput(argv **C.char, cStdout **C.char, cStderr **C.char, cRet
 	*cStdout = TrackedCString(string(output))
 	*cStderr = TrackedCString(string(outputErr))
 	*cRetCode = C.int(retCode)
+}
+
+//export ObfuscateSql
+func ObfuscateSql(rawSql *C.char) *C.char {
+	s := C.GoString(rawSql)
+	obfuscated, err := obfuscate.NewObfuscator(nil).ObfuscateSQLStringSimple(s)
+	if err != nil {
+		return TrackedCString(fmt.Sprint("ERROR: %v", err))
+	}
+	return TrackedCString(obfuscated)
 }

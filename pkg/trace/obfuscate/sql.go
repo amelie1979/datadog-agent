@@ -162,6 +162,14 @@ func (f *groupingFilter) Reset() {
 	f.groupMulti = 0
 }
 
+func (o *Obfuscator) ObfuscateSQLStringSimple(in string) (string, error) {
+	obfuscated, err := o.obfuscateSQLString(in)
+	if err != nil {
+		return "", err
+	}
+	return obfuscated.query, nil
+}
+
 // obfuscateSQLString quantizes and obfuscates the given input SQL query string. Quantization removes
 // some elements such as comments and aliases and obfuscation attempts to hide sensitive information
 // in strings and numbers by redacting them.

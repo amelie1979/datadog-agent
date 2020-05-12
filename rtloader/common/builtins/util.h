@@ -41,6 +41,8 @@ PyMODINIT_FUNC PyInit_util(void);
 void Py2_init_util();
 #endif
 
+void _set_obfuscate_sql_cb(cb_obfuscate_sql_t);
+
 #ifdef __cplusplus
 }
 #endif

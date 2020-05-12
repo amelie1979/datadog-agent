@@ -38,3 +38,25 @@ func TestHeaders(t *testing.T) {
 	// Check for leaks
 	helpers.AssertMemoryUsage(t)
 }
+
+
+func TestObfuscateSql(t *testing.T) {
+	// Reset memory counters
+	helpers.ResetMemoryStats()
+
+	code := fmt.Sprintf(`
+	result = util.obfuscate_sql("hello")
+	with open(r'%s', 'w') as f:
+		f.write(result)
+	`, tmpfile.Name())
+	out, err := run(code)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if out != "hello-there" {
+		t.Errorf("Failed obfuscation: '%s'", out)
+	}
+
+	// Check for leaks
+	helpers.AssertMemoryUsage(t)
+}
