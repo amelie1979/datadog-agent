@@ -3503,6 +3503,7 @@ deploy_cloudfront_invalidate_on_failure:
 
 pupernetes-dev:
   <<: *pupernetes_template
+  needs: ["fail_on_non_triggered_tag"]
   when: manual
   except:
     - master

@@ -21,6 +21,13 @@ _wait_binary() {
 
 _wait_binary pupernetes
 
+set -x
+which pupernetes
+
+systemctl status setup-pupernetes
+
+journalctl -b -u setup-pupernetes
+
 # Binary is here, so setup-pupernetes has completed
 # pupernetes.service should start soon because it contains the constraint After=setup-pupernetes.service
 
